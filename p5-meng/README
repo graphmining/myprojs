@@ -1,0 +1,26 @@
+Project 5: File System Measurements
+Dec 9 2015
+
+There are 5 experiments included in this project to test for various file system attributes.
+
+Test 1: Timer
+
+This test is run by timer.c. It can be compiled using the command gcc -o timer timer.c. It can be executed using the command ./timer. The output for the file gives to clock frequencies, which should match the clock frequency of the computer the process is being run on.
+
+Test 2: Block Size
+
+This test is run using block.c. It can be compiled using the command gcc -o block block.c, and then executed using ./block. The output for the file should give a list of byte reads and their associated cycle count.
+
+Test 3:Prefetching Size
+
+This test is run using the file prefetch.c. It can be compiled using the command gcc -o prefetch prefetch.c, and executed using ./prefetch. The output for the test gives the block read and the associated cycle time.
+
+Test 4:Cache Size
+
+This test is run using the file cache.c. It can be compiled using the command gcc -o cache cache.c, and executed using ./cache. The output for the test gives the block read and the associated cycle time.
+
+Test 5:Number of Direct Pointers in Inode
+
+This test is run using the file inode.c. It can be compiled using the command gcc -o inode inode.c, and executed using ./inode. The output for the test gives the block written and the associated cycle time.
+
+

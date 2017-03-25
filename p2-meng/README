@@ -1,0 +1,21 @@
+Memory Simulator
+OCT 2015
+Project 2: Measuring the Performance of Page Replacement Algorithms on Real Traces
+
+The memory simulator (memsim.c) is a simulation tool that measures the following
+page replacement algorithms:
+	-VMS
+	-LRU
+	-CLOCK
+	-OPT
+
+The simulator takes in the following arguments:
+	a memory trace file
+	a frame number
+	a page replacement algorithm
+	an option for printing debug or no debug (quite)
+
+USAGE: memsim <tracefile> <nframes> <vms|lru|clk|opt> <debug|quiet> 
+
+Final print will be the total memory frames, events in traces, total disk reads, 
+total disk writes. 

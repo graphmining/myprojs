@@ -1,0 +1,61 @@
+Project 3: Buffer Replacement in PostgreSQL
+CIS6930 Fall 2016
+ 
+
+
+A simple approach to implement the LRU policy is to use a doubly-linked list to link up the buffer pages
+such that the head page is the least recently used and the tail of the list the most recently used page.
+
+Hence the strategy is that whenever a buffer page is referenced, it is moved to the tail of the list; 
+and whenever a replacement page is sought from the list, the unpinned buffer page that is closest to 
+the head of the list is selected for eviction.
+
+In my implementation, I maintain a doublely linked LRU list of those buffers with a refcount of 0. 
+When a new buffer becomes available, it is unpinned and when its reference count becomes zero, 
+it is added to the tail of the free LRU list and the one on the head of the list is alway picked to be replaced.
+
+Data structure design:
+typedef struct sbufdesc
+{
+	BufferTag	tag;			/* ID of page contained in buffer */
+	BufFlags	flags;			/* see bit definitions above */
+	uint16		usage_count;	/* usage counter for clock sweep code */
+	unsigned	refcount;		/* # of backends holding pins on buffer */
+	int			wait_backend_pid;		/* backend PID of pin-count waiter */
+
+	slock_t		buf_hdr_lock;	/* protects the above fields */
+
+	int			buf_id;			/* buffer's index number (from 0) */
+	int			freeNext;		/* link in freelist chain */
+
+	/*LRU_CHANGE: add lruNext and lruPrev*************/
+	int			lruNext;
+	int			lruPrev;
+ 
+
+	LWLockId	io_in_progress_lock;	/* to wait for I/O to complete */
+	LWLockId	content_lock;	/* to lock access to buffer contents */
+} BufferDesc;
+
+
+The files I have modified are:
+~/src/backend/storage/buffer/buf_init.c
+~/src/backend/storage/buffer/bufmgr.c
+~/src/backend/storage/buffer/freelist.c
+and
+~/src/include/storage/buf_internals.h
+I have left comments /*LRU_CHANGE*/ at where I made modifications.
+
+
+Installation:
+make clean
+./configure CFLAGS="-O0"
+make
+sudo make install
+rm -rf /usr/local/pgsql/data
+mkdir /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su postgres
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+/usr/local/pgsql/bin/postgres -D /usr/local/pgsql/data >logfile 2>&1 &
+psql -p 5432 -h localhost

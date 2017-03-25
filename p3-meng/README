@@ -1,0 +1,59 @@
+Project 3: Cube
+ 
+
+The multi-threaded game simulator Cube uses multiple threads to simulate wizards in a structure of n by n rooms, in which they fight the opposite team until one of the team members are all frozen.
+
+
+The simulator takes in the following arguments:
+	the size of the cube
+	the seed used for random number generation
+	the number of players for team A
+	the number of players for team B
+
+USAGE: ./cube -size -seed -teamA -teamB
+for example: ./cube -size 2 -seed 3 -teamA 2 -teamB 4
+
+Output will depend on different types of commands. 
+Commands during runtime:
+
+start - it starts the game 
+s - it will do a simple move and output all the steps to the move
+c - it will continue through the entire game and output all the steps
+show - it will display the current cube
+stop - it stops the game 
+exit - it exits from the program
+
+For example:
+$ ./cube -size 2 -seed 23 -teamA 2 -teamB 2
+cube> start
+cube> s
+Wizard A0 in room (0,0) wants to go to room (0,1)
+Wizard A0 in room (0,0) moves to room (0,1)
+Wizard A0 in room (0,1) finds enemy B1
+Wizard A0 in room (0,1) gets frozen by enemy B1
+cube> c
+Wizard B1 in room (0,1) wants to go to room (0,0)
+Wizard B1 in room (0,1) moves to room (0,0)
+Wizard B1 in room (0,0) finds enemy A1
+Wizard B1 in room (0,0) gets frozen by enemy A1
+Wizard A1 in room (0,0) wants to go to room (0,1)
+Wizard A1 in room (0,0) moves to room (0,1)
+Wizard A1 in room (0,1) unfreezes friend A0
+Wizard A1 in room (0,1) unfreezes friend A0
+Wizard B0 in room (1,0) wants to go to room (1,1)
+Wizard B0 in room (1,0) moves to room (1,1)
+Wizard B0 in room (1,1) finds nobody around
+Wizard A0 in room (0,1) wants to go to room (1,1)
+Wizard A0 in room (0,1) moves to room (1,1)
+Wizard A0 in room (1,1) finds enemy B0
+Wizard A0 in room (1,1) freezes enemy B0
+Team A won the game!
+All wizard threads in team A and B are terminated!
+cube> show
++--+--+
+|b |  |
++--+--+
+|A |bA|
++--+--+
+cube> exit
+
